@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+websockets
+python-dotenv
+deepgram-sdk
+elevenlabs
+google-generativeai
+tavily-python
+openai
+gunicorn

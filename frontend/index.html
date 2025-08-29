@@ -1,0 +1,34 @@
+<!-- Day 27 से कोई बदलाव नहीं -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Voice Agent (Live)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="settingsModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2>Configure API Keys</h2>
+            <p>Your keys are saved in your browser.</p>
+            <div class="form-group"><label for="deepgramKey">Deepgram API Key</label><input type="password" id="deepgramKey"></div>
+            <div class="form-group"><label for="geminiKey">Gemini API Key</label><input type="password" id="geminiKey"></div>
+            <div class="form-group"><label for="elevenlabsKey">ElevenLabs API Key</label><input type="password" id="elevenlabsKey"></div>
+            <div class="form-group"><label for="tavilyKey">Tavily API Key</label><input type="password" id="tavilyKey"></div>
+            <div class="form-group"><label for="openaiKey">OpenAI API Key (for DALL-E)</label><input type="password" id="openaiKey"></div>
+            <div class="modal-actions"><button id="saveKeysButton">Save and Close</button></div>
+        </div>
+    </div>
+    <div class="container">
+        <button id="settingsButton" class="settings-btn">⚙️</button>
+        <h1>AI Voice Agent</h1>
+        <p>Configure API keys in settings, then start talking!</p>
+        <div class="persona-selector"><label for="persona">Choose a Persona:</label><select id="persona"><option value="assistant">Helpful Assistant</option><option value="robot">Sarcastic Robot</option><option value="pirate">Gruff Pirate</option></select></div>
+        <button id="recordButton" disabled>Configure Keys to Start</button>
+        <div class="status" id="status">Status: Idle</div>
+        <div class="image-container" id="imageContainer"><img id="generatedImage" src="" alt="Generated image"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

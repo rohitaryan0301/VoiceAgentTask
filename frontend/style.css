@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #0d1117; /* GitHub Dark Blue */
+    color: #c9d1d9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+.container {
+    text-align: center;
+    background-color: #161b22;
+    padding: 40px;
+    border-radius: 16px;
+    border: 1px solid #30363d;
+    box-shadow: 0 8px 30px rgba(0, 123, 255, 0.2);
+    width: 90%;
+    max-width: 550px;
+    position: relative;
+}
+
+.settings-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #21262d;
+    color: #c9d1d9;
+    border: 1px solid #30363d;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+.settings-btn:hover {
+    background-color: #30363d;
+    box-shadow: 0 0 10px rgba(88, 166, 255, 0.5);
+}
+
+h1 {
+    color: #58a6ff;
+    font-weight: 700;
+    text-shadow: 0 0 8px rgba(88, 166, 255, 0.5);
+}
+p { color: #8b949e; }
+
+.persona-selector { margin: 25px 0; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.persona-selector label { font-size: 16px; color: #8b949e; }
+.persona-selector select { padding: 10px; border-radius: 8px; border: 1px solid #30363d; background-color: #0d1117; color: #c9d1d9; font-size: 16px; cursor: pointer; width: 60%; }
+
+#recordButton {
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+#recordButton:disabled { background-color: #21262d; color: #484f58; cursor: not-allowed; }
+#recordButton.ready { background: linear-gradient(45deg, #2ea043, #56d364); color: white; }
+#recordButton.ready:hover { box-shadow: 0 0 20px rgba(46, 160, 67, 0.6); transform: translateY(-2px); }
+#recordButton.listening { background: linear-gradient(45deg, #d73a49, #fa7970); color: white; box-shadow: 0 0 20px rgba(215, 58, 73, 0.8); }
+#recordButton.processing { background: linear-gradient(45deg, #d29922, #f7c758); color: #161b22; }
+
+.status { margin-top: 20px; font-size: 16px; color: #8b949e; }
+
+.image-container { margin-top: 30px; width: 100%; aspect-ratio: 1 / 1; background-color: #0d1117; border: 1px solid #30363d; border-radius: 10px; display: none; justify-content: center; align-items: center; }
+.image-container.visible { display: flex; }
+#generatedImage { max-width: 95%; max-height: 95%; border-radius: 8px; }
+
+/* Modal Styles */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+.modal-overlay.hidden { display: none; }
+.modal-content { background: #161b22; padding: 30px; border-radius: 10px; width: 90%; max-width: 500px; border: 1px solid #30363d; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5); }
+.modal-content h2 { color: #58a6ff; text-align: center; }
+.form-group { margin-bottom: 20px; text-align: left; }
+.form-group label { display: block; margin-bottom: 8px; color: #8b949e; }
+.form-group input { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #30363d; background-color: #0d1117; color: #c9d1d9; box-sizing: border-box; font-size: 16px; }
+.form-group input::placeholder { color: #484f58; }
+.modal-actions { text-align: center; margin-top: 30px; }
+.modal-actions button { background-color: #238636; color: white; border: 1px solid #2ea043; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background-color 0.3s; }
+.modal-actions button:hover { background-color: #2ea043; }
