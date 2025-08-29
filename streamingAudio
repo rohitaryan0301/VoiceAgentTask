@@ -1,0 +1,114 @@
+// app.js
+
+const ws = new WebSocket("ws://localhost:4000/audio");
+
+let workletNode;
+let audioContext;
+
+ws.onopen = () => {
+  console.log("WebSocket connected to /audio");
+};
+
+ws.onmessage = async (event) => {
+  const arrayBuffer = await event.data.arrayBuffer();
+
+  // initialize AudioContext only once (on first audio chunk)
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    await audioContext.audioWorklet.addModule("processor.js");
+
+    workletNode = new AudioWorkletNode(audioContext, "player-processor");
+    workletNode.connect(audioContext.destination);
+
+    console.log("AudioWorklet initialized ✅");
+  }
+
+  // safety check
+  if (workletNode) {
+    workletNode.port.postMessage(arrayBuffer);
+  }
+};
+
+// resume context on user click (required by Chrome autoplay policy)
+document.addEventListener("click", () => {
+  if (audioContext && audioContext.state === "suspended") {
+    audioContext.resume();
+    console.log("AudioContext resumed by user interaction 🎵");
+  }
+});
+
+
+
+
+// processor.js
+
+  class PlayerProcessor extends AudioWorkletProcessor {
+  constructor() {
+    super();
+    this.buffer = [];
+    this.port.onmessage = (event) => {
+      const data = new Float32Array(event.data);
+      this.buffer.push(...data);
+    };
+  }
+
+  process(inputs, outputs) {
+    const output = outputs[0];
+    const channel = output[0];
+
+    for (let i = 0; i < channel.length; i++) {
+      channel[i] = this.buffer.length ? this.buffer.shift() : 0;
+    }
+
+    return true;
+  }
+}
+
+registerProcessor("player-processor", PlayerProcessor);
+
+
+
+
+
+// sever.js
+
+const express = require("express");
+const http = require("http");
+const WebSocket = require("ws");
+
+const app = express();
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server, path: "/audio" });
+
+app.use(express.static("public"));
+
+wss.on("connection", (ws) => {
+  console.log("Client connected to /audio");
+
+  // send synthetic audio (sine wave) for testing
+  let t = 0;
+  const sampleRate = 48000;
+  const freq = 440; // A4 tone
+
+  const interval = setInterval(() => {
+    const chunkSize = 2048;
+    const buffer = new Float32Array(chunkSize);
+
+    for (let i = 0; i < chunkSize; i++) {
+      buffer[i] = Math.sin(2 * Math.PI * freq * (t / sampleRate));
+      t++;
+    }
+
+    ws.send(buffer.buffer);
+  }, 50);
+
+  ws.on("close", () => {
+    console.log("Client disconnected");
+    clearInterval(interval);
+  });
+});
+
+server.listen(4000, () => {
+  console.log("Server running at http://localhost:4000");
+  console.log("WebSocket endpoint: ws://localhost:4000/audio");
+});
